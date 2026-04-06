@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Your cart — [BLANK] GOLF" />
+  <title>Cart — [BLANK] GOLF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='7' height='28' fill='none' stroke='%23000' stroke-width='2.5'/%3E%3Crect x='23' y='2' width='7' height='28' fill='none' stroke='%23000' stroke-width='2.5'/%3E%3C/svg%3E" />
+</head>
+<body>
+
+  <!-- Promo Bar -->
+  <div class="promo-bar">
+    Free shipping on orders over $100 &nbsp;·&nbsp; New arrivals every drop
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="index.html" class="nav__logo" aria-label="[BLANK] GOLF — Home">
+          <svg class="nav__logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="2" y="4" width="11" height="32" fill="none" stroke="#000" stroke-width="3.5"/>
+            <line x1="2" y1="4" x2="13" y2="4" stroke="#000" stroke-width="3.5"/>
+            <line x1="2" y1="36" x2="13" y2="36" stroke="#000" stroke-width="3.5"/>
+            <rect x="27" y="4" width="11" height="32" fill="none" stroke="#000" stroke-width="3.5"/>
+            <line x1="27" y1="4" x2="38" y2="4" stroke="#000" stroke-width="3.5"/>
+            <line x1="27" y1="36" x2="38" y2="36" stroke="#000" stroke-width="3.5"/>
+          </svg>
+          <div>
+            <span class="nav__logo-text">[BLANK]</span>
+            <span class="nav__logo-sub">~golf~</span>
+          </div>
+        </a>
+
+        <ul class="nav__links" role="list">
+          <li><a href="shop.html" class="nav__link">Shop</a></li>
+          <li><a href="index.html#about" class="nav__link">About</a></li>
+          <li>
+            <a href="cart.html" class="nav__link nav__cart active" aria-label="Shopping cart" aria-current="page">
+              <svg class="nav__cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <path d="M16 10a4 4 0 01-8 0"/>
+              </svg>
+              Cart
+              <span class="cart-badge" aria-live="polite">0</span>
+            </a>
+          </li>
+        </ul>
+
+        <button class="nav__mobile-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="cart-page">
+      <div class="container">
+
+        <h1 class="cart-page__title">YOUR CART</h1>
+
+        <!-- Empty State (shown when cart is empty) -->
+        <div class="cart-empty" role="status" aria-label="Cart is empty">
+          <div class="cart-empty__icon" aria-hidden="true">
+            <svg width="120" height="120" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+              <line x1="4" y1="4" x2="16" y2="4" stroke="#000" stroke-width="3.5"/>
+              <line x1="4" y1="44" x2="16" y2="44" stroke="#000" stroke-width="3.5"/>
+              <rect x="32" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+              <line x1="32" y1="4" x2="44" y2="4" stroke="#000" stroke-width="3.5"/>
+              <line x1="32" y1="44" x2="44" y2="44" stroke="#000" stroke-width="3.5"/>
+            </svg>
+          </div>
+          <h2 class="cart-empty__title">Nothing here yet.</h2>
+          <p class="cart-empty__sub">Your cart is empty. Head to the shop and find something worth wearing.</p>
+          <a href="shop.html" class="btn btn--primary">Shop the Collection</a>
+        </div>
+
+        <!-- Cart Content (shown when cart has items) -->
+        <div class="cart-content" style="display:none;">
+          <div class="cart-layout">
+
+            <!-- Left: Cart Items -->
+            <div>
+              <div class="cart-items" aria-label="Cart items" aria-live="polite">
+                <!-- Populated by JS -->
+              </div>
+
+              <!-- Continue Shopping -->
+              <div style="padding-top:var(--spacing-xl);">
+                <a href="shop.html" class="btn btn--outline" style="font-size:0.75rem;letter-spacing:0.12em;padding:0.7rem 1.5rem;">
+                  &larr; Continue Shopping
+                </a>
+              </div>
+            </div>
+
+            <!-- Right: Order Summary -->
+            <aside class="order-summary" aria-label="Order summary">
+              <p class="order-summary__title">Order Summary</p>
+
+              <div class="order-summary__row">
+                <span class="order-summary__label">Subtotal</span>
+                <span class="order-summary__value summary-subtotal" aria-live="polite">$0.00</span>
+              </div>
+              <div class="order-summary__row">
+                <span class="order-summary__label">Shipping</span>
+                <span class="order-summary__value summary-shipping" aria-live="polite">—</span>
+              </div>
+              <p class="order-summary__shipping-note" aria-live="polite">Free shipping on orders over $100</p>
+
+              <div class="order-summary__row order-summary__row--total">
+                <span>Total</span>
+                <span class="summary-total" aria-live="polite">$0.00</span>
+              </div>
+
+              <button class="btn btn--primary order-summary__checkout checkout-btn" aria-label="Proceed to checkout">
+                Checkout
+              </button>
+
+              <a href="shop.html" class="order-summary__continue">Continue Shopping</a>
+
+              <!-- Trust signals -->
+              <div style="margin-top:var(--spacing-xl);padding-top:var(--spacing-lg);border-top:1px solid var(--gray-mid);">
+                <div style="display:flex;flex-direction:column;gap:var(--spacing-sm);">
+                  <p style="font-size:0.72rem;color:var(--gray-dark);display:flex;align-items:center;gap:0.5rem;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    Secure checkout
+                  </p>
+                  <p style="font-size:0.72rem;color:var(--gray-dark);display:flex;align-items:center;gap:0.5rem;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                    Free returns within 30 days
+                  </p>
+                  <p style="font-size:0.72rem;color:var(--gray-dark);display:flex;align-items:center;gap:0.5rem;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="1" y="3" width="22" height="18" rx="2"/><path d="M1 9h22"/></svg>
+                    All major cards accepted
+                  </p>
+                </div>
+              </div>
+            </aside>
+
+          </div>
+        </div>
+        <!-- /cart-content -->
+
+      </div>
+    </section>
+
+    <!-- You might also like (static — shown regardless of cart state) -->
+    <section class="section" aria-labelledby="also-like-heading" style="background:var(--gray-light);">
+      <div class="container">
+        <header class="section-header section-header--center fade-in">
+          <p class="section-label">You May Also Like</p>
+          <h2 class="section-title" id="also-like-heading" style="font-size:clamp(2rem,4vw,3rem);">Keep Shopping</h2>
+        </header>
+
+        <div class="product-grid product-grid--3">
+
+          <article class="product-card fade-in">
+            <a href="product.html" class="product-card__image-wrap" aria-label="View [BLANK] Polo">
+              <div class="product-image">
+                <svg class="product-image__bracket" width="56" height="56" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                  <rect x="4" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="4" x2="16" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="44" x2="16" y2="44" stroke="#000" stroke-width="3.5"/>
+                  <rect x="32" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="4" x2="44" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="44" x2="44" y2="44" stroke="#000" stroke-width="3.5"/>
+                </svg>
+                <span class="product-image__name">[BLANK] Polo</span>
+              </div>
+              <div class="product-card__overlay">
+                <button class="product-card__quick-add"
+                  data-add-to-cart
+                  data-product-id="blank-polo"
+                  data-product-name="[BLANK] Polo"
+                  data-product-price="65"
+                  data-product-category="tops"
+                  aria-label="Quick add [BLANK] Polo to cart">
+                  Quick Add
+                </button>
+              </div>
+            </a>
+            <div class="product-card__info">
+              <p class="product-card__category">Tops</p>
+              <h3 class="product-card__name"><a href="product.html">[BLANK] Polo</a></h3>
+              <p class="product-card__price">$65</p>
+            </div>
+          </article>
+
+          <article class="product-card fade-in" style="transition-delay:0.1s">
+            <a href="product.html" class="product-card__image-wrap" aria-label="View Range Hoodie">
+              <div class="product-image" style="background:#ebebeb;">
+                <svg class="product-image__bracket" width="56" height="56" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                  <rect x="4" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="4" x2="16" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="44" x2="16" y2="44" stroke="#000" stroke-width="3.5"/>
+                  <rect x="32" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="4" x2="44" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="44" x2="44" y2="44" stroke="#000" stroke-width="3.5"/>
+                </svg>
+                <span class="product-image__name">Range Hoodie</span>
+              </div>
+              <div class="product-card__overlay">
+                <button class="product-card__quick-add"
+                  data-add-to-cart
+                  data-product-id="range-hoodie"
+                  data-product-name="Range Hoodie"
+                  data-product-price="85"
+                  data-product-category="tops"
+                  aria-label="Quick add Range Hoodie to cart">
+                  Quick Add
+                </button>
+              </div>
+            </a>
+            <div class="product-card__info">
+              <p class="product-card__category">Tops</p>
+              <h3 class="product-card__name"><a href="product.html">Range Hoodie</a></h3>
+              <p class="product-card__price">$85</p>
+            </div>
+          </article>
+
+          <article class="product-card fade-in" style="transition-delay:0.2s">
+            <a href="product.html" class="product-card__image-wrap" aria-label="View Sunday Joggers">
+              <div class="product-image">
+                <svg class="product-image__bracket" width="56" height="56" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                  <rect x="4" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="4" x2="16" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="44" x2="16" y2="44" stroke="#000" stroke-width="3.5"/>
+                  <rect x="32" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="4" x2="44" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="44" x2="44" y2="44" stroke="#000" stroke-width="3.5"/>
+                </svg>
+                <span class="product-image__name">Sunday Joggers</span>
+              </div>
+              <div class="product-card__overlay">
+                <button class="product-card__quick-add"
+                  data-add-to-cart
+                  data-product-id="sunday-joggers"
+                  data-product-name="Sunday Joggers"
+                  data-product-price="75"
+                  data-product-category="bottoms"
+                  aria-label="Quick add Sunday Joggers to cart">
+                  Quick Add
+                </button>
+              </div>
+            </a>
+            <div class="product-card__info">
+              <p class="product-card__category">Bottoms</p>
+              <h3 class="product-card__name"><a href="product.html">Sunday Joggers</a></h3>
+              <p class="product-card__price">$75</p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__inner">
+        <div>
+          <div class="footer__brand-logo">
+            <svg width="32" height="32" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+              <rect x="2" y="4" width="11" height="32" fill="none" stroke="#fff" stroke-width="3"/>
+              <line x1="2" y1="4" x2="13" y2="4" stroke="#fff" stroke-width="3"/>
+              <line x1="2" y1="36" x2="13" y2="36" stroke="#fff" stroke-width="3"/>
+              <rect x="27" y="4" width="11" height="32" fill="none" stroke="#fff" stroke-width="3"/>
+              <line x1="27" y1="4" x2="38" y2="4" stroke="#fff" stroke-width="3"/>
+              <line x1="27" y1="36" x2="38" y2="36" stroke="#fff" stroke-width="3"/>
+            </svg>
+            <div>
+              <span class="footer__brand-name">[BLANK]</span>
+              <span class="footer__brand-sub">~golf~</span>
+            </div>
+          </div>
+          <p class="footer__tagline">Minimalist golf clothing for the modern player. Premium materials, clean design, accessible prices.</p>
+        </div>
+        <div>
+          <p class="footer__col-title">Shop</p>
+          <ul class="footer__links">
+            <li><a href="shop.html" class="footer__link">All Products</a></li>
+            <li><a href="shop.html" class="footer__link">Tops</a></li>
+            <li><a href="shop.html" class="footer__link">Bottoms</a></li>
+            <li><a href="shop.html" class="footer__link">Accessories</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__col-title">Info</p>
+          <ul class="footer__links">
+            <li><a href="index.html#about" class="footer__link">About Us</a></li>
+            <li><a href="#" class="footer__link">Size Guide</a></li>
+            <li><a href="#" class="footer__link">Shipping &amp; Returns</a></li>
+            <li><a href="#" class="footer__link">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__col-title">Follow</p>
+          <ul class="footer__links">
+            <li><a href="#" class="footer__link">Instagram</a></li>
+            <li><a href="#" class="footer__link">TikTok</a></li>
+            <li><a href="#" class="footer__link">Twitter / X</a></li>
+            <li><a href="#" class="footer__link">Newsletter</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copy">&copy; 2026 [BLANK] GOLF. All rights reserved.</p>
+        <nav class="footer__bottom-links" aria-label="Legal">
+          <a href="#" class="footer__bottom-link">Privacy Policy</a>
+          <a href="#" class="footer__bottom-link">Terms of Service</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>

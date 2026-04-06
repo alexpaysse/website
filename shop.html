@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="[BLANK] GOLF — Shop the full collection. Premium minimalist golf clothing at accessible prices." />
+  <title>The Collection — [BLANK] GOLF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='7' height='28' fill='none' stroke='%23000' stroke-width='2.5'/%3E%3Crect x='23' y='2' width='7' height='28' fill='none' stroke='%23000' stroke-width='2.5'/%3E%3C/svg%3E" />
+</head>
+<body>
+
+  <!-- Promo Bar -->
+  <div class="promo-bar">
+    Free shipping on orders over $100 &nbsp;·&nbsp; New arrivals every drop
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="index.html" class="nav__logo" aria-label="[BLANK] GOLF — Home">
+          <svg class="nav__logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="2" y="4" width="11" height="32" fill="none" stroke="#000" stroke-width="3.5"/>
+            <line x1="2" y1="4" x2="13" y2="4" stroke="#000" stroke-width="3.5"/>
+            <line x1="2" y1="36" x2="13" y2="36" stroke="#000" stroke-width="3.5"/>
+            <rect x="27" y="4" width="11" height="32" fill="none" stroke="#000" stroke-width="3.5"/>
+            <line x1="27" y1="4" x2="38" y2="4" stroke="#000" stroke-width="3.5"/>
+            <line x1="27" y1="36" x2="38" y2="36" stroke="#000" stroke-width="3.5"/>
+          </svg>
+          <div>
+            <span class="nav__logo-text">[BLANK]</span>
+            <span class="nav__logo-sub">~golf~</span>
+          </div>
+        </a>
+
+        <ul class="nav__links" role="list">
+          <li><a href="shop.html" class="nav__link active">Shop</a></li>
+          <li><a href="index.html#about" class="nav__link">About</a></li>
+          <li>
+            <a href="cart.html" class="nav__link nav__cart" aria-label="Shopping cart">
+              <svg class="nav__cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <path d="M16 10a4 4 0 01-8 0"/>
+              </svg>
+              Cart
+              <span class="cart-badge" aria-live="polite">0</span>
+            </a>
+          </li>
+        </ul>
+
+        <button class="nav__mobile-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Page Header -->
+    <header class="page-header" aria-label="Shop header">
+      <div class="container">
+        <h1 class="page-header__title">The Collection</h1>
+        <p class="page-header__sub">8 Pieces &nbsp;·&nbsp; Spring / Summer 2026</p>
+      </div>
+    </header>
+
+    <!-- Shop Section -->
+    <section class="section section--sm" aria-label="Products">
+      <div class="container">
+
+        <!-- Filter Bar -->
+        <div class="filter-bar" role="group" aria-label="Filter products by category">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="tops">Tops</button>
+          <button class="filter-btn" data-filter="bottoms">Bottoms</button>
+          <button class="filter-btn" data-filter="accessories">Accessories</button>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="shop-grid" role="list" aria-label="Product grid">
+
+          <!-- 1: [BLANK] Polo -->
+          <article class="shop-product-card product-card fade-in" data-category="tops" role="listitem">
+            <a href="product.html" class="product-card__image-wrap" aria-label="View [BLANK] Polo">
+              <div class="product-image">
+                <svg class="product-image__bracket" width="68" height="68" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                  <rect x="4" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="4" x2="16" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="44" x2="16" y2="44" stroke="#000" stroke-width="3.5"/>
+                  <rect x="32" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="4" x2="44" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="44" x2="44" y2="44" stroke="#000" stroke-width="3.5"/>
+                </svg>
+                <span class="product-image__name">[BLANK] Polo</span>
+              </div>
+              <div class="product-card__overlay">
+                <button class="product-card__quick-add"
+                  data-add-to-cart
+                  data-product-id="blank-polo"
+                  data-product-name="[BLANK] Polo"
+                  data-product-price="65"
+                  data-product-category="tops"
+                  aria-label="Quick add [BLANK] Polo to cart">
+                  Quick Add
+                </button>
+              </div>
+            </a>
+            <div class="product-card__info">
+              <p class="product-card__category">Tops</p>
+              <h2 class="product-card__name"><a href="product.html">[BLANK] Polo</a></h2>
+              <p class="product-card__price">$65</p>
+              <a href="product.html" class="btn btn--outline product-card__btn">View Product</a>
+            </div>
+          </article>
+
+          <!-- 2: Course Tee -->
+          <article class="shop-product-card product-card fade-in" data-category="tops" role="listitem" style="transition-delay:0.05s">
+            <a href="product.html" class="product-card__image-wrap" aria-label="View Course Tee">
+              <div class="product-image" style="background:#ebebeb;">
+                <svg class="product-image__bracket" width="68" height="68" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                  <rect x="4" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="4" x2="16" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="44" x2="16" y2="44" stroke="#000" stroke-width="3.5"/>
+                  <rect x="32" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="4" x2="44" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="44" x2="44" y2="44" stroke="#000" stroke-width="3.5"/>
+                </svg>
+                <span class="product-image__name">Course Tee</span>
+              </div>
+              <div class="product-card__overlay">
+                <button class="product-card__quick-add"
+                  data-add-to-cart
+                  data-product-id="course-tee"
+                  data-product-name="Course Tee"
+                  data-product-price="35"
+                  data-product-category="tops"
+                  aria-label="Quick add Course Tee to cart">
+                  Quick Add
+                </button>
+              </div>
+            </a>
+            <div class="product-card__info">
+              <p class="product-card__category">Tops</p>
+              <h2 class="product-card__name"><a href="product.html">Course Tee</a></h2>
+              <p class="product-card__price">$35</p>
+              <button class="btn btn--outline product-card__btn"
+                data-add-to-cart
+                data-product-id="course-tee"
+                data-product-name="Course Tee"
+                data-product-price="35"
+                data-product-category="tops">
+                Add to Cart
+              </button>
+            </div>
+          </article>
+
+          <!-- 3: Range Hoodie -->
+          <article class="shop-product-card product-card fade-in" data-category="tops" role="listitem" style="transition-delay:0.1s">
+            <a href="product.html" class="product-card__image-wrap" aria-label="View Range Hoodie">
+              <div class="product-image">
+                <svg class="product-image__bracket" width="68" height="68" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                  <rect x="4" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="4" x2="16" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="44" x2="16" y2="44" stroke="#000" stroke-width="3.5"/>
+                  <rect x="32" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="4" x2="44" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="44" x2="44" y2="44" stroke="#000" stroke-width="3.5"/>
+                </svg>
+                <span class="product-image__name">Range Hoodie</span>
+              </div>
+              <div class="product-card__overlay">
+                <button class="product-card__quick-add"
+                  data-add-to-cart
+                  data-product-id="range-hoodie"
+                  data-product-name="Range Hoodie"
+                  data-product-price="85"
+                  data-product-category="tops"
+                  aria-label="Quick add Range Hoodie to cart">
+                  Quick Add
+                </button>
+              </div>
+            </a>
+            <div class="product-card__info">
+              <p class="product-card__category">Tops</p>
+              <h2 class="product-card__name"><a href="product.html">Range Hoodie</a></h2>
+              <p class="product-card__price">$85</p>
+              <button class="btn btn--outline product-card__btn"
+                data-add-to-cart
+                data-product-id="range-hoodie"
+                data-product-name="Range Hoodie"
+                data-product-price="85"
+                data-product-category="tops">
+                Add to Cart
+              </button>
+            </div>
+          </article>
+
+          <!-- 4: Fairway Quarter-Zip -->
+          <article class="shop-product-card product-card fade-in" data-category="tops" role="listitem" style="transition-delay:0.15s">
+            <a href="product.html" class="product-card__image-wrap" aria-label="View Fairway Quarter-Zip">
+              <div class="product-image" style="background:#ebebeb;">
+                <svg class="product-image__bracket" width="68" height="68" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                  <rect x="4" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="4" x2="16" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="44" x2="16" y2="44" stroke="#000" stroke-width="3.5"/>
+                  <rect x="32" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="4" x2="44" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="44" x2="44" y2="44" stroke="#000" stroke-width="3.5"/>
+                </svg>
+                <span class="product-image__name">Fairway Quarter-Zip</span>
+              </div>
+              <div class="product-card__overlay">
+                <button class="product-card__quick-add"
+                  data-add-to-cart
+                  data-product-id="fairway-qz"
+                  data-product-name="Fairway Quarter-Zip"
+                  data-product-price="95"
+                  data-product-category="tops"
+                  aria-label="Quick add Fairway Quarter-Zip to cart">
+                  Quick Add
+                </button>
+              </div>
+            </a>
+            <div class="product-card__info">
+              <p class="product-card__category">Tops</p>
+              <h2 class="product-card__name"><a href="product.html">Fairway Quarter-Zip</a></h2>
+              <p class="product-card__price">$95</p>
+              <button class="btn btn--outline product-card__btn"
+                data-add-to-cart
+                data-product-id="fairway-qz"
+                data-product-name="Fairway Quarter-Zip"
+                data-product-price="95"
+                data-product-category="tops">
+                Add to Cart
+              </button>
+            </div>
+          </article>
+
+          <!-- 5: Practice Shorts -->
+          <article class="shop-product-card product-card fade-in" data-category="bottoms" role="listitem" style="transition-delay:0.2s">
+            <a href="product.html" class="product-card__image-wrap" aria-label="View Practice Shorts">
+              <div class="product-image">
+                <svg class="product-image__bracket" width="68" height="68" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                  <rect x="4" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="4" x2="16" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="44" x2="16" y2="44" stroke="#000" stroke-width="3.5"/>
+                  <rect x="32" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="4" x2="44" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="44" x2="44" y2="44" stroke="#000" stroke-width="3.5"/>
+                </svg>
+                <span class="product-image__name">Practice Shorts</span>
+              </div>
+              <div class="product-card__overlay">
+                <button class="product-card__quick-add"
+                  data-add-to-cart
+                  data-product-id="practice-shorts"
+                  data-product-name="Practice Shorts"
+                  data-product-price="55"
+                  data-product-category="bottoms"
+                  aria-label="Quick add Practice Shorts to cart">
+                  Quick Add
+                </button>
+              </div>
+            </a>
+            <div class="product-card__info">
+              <p class="product-card__category">Bottoms</p>
+              <h2 class="product-card__name"><a href="product.html">Practice Shorts</a></h2>
+              <p class="product-card__price">$55</p>
+              <button class="btn btn--outline product-card__btn"
+                data-add-to-cart
+                data-product-id="practice-shorts"
+                data-product-name="Practice Shorts"
+                data-product-price="55"
+                data-product-category="bottoms">
+                Add to Cart
+              </button>
+            </div>
+          </article>
+
+          <!-- 6: Sunday Joggers -->
+          <article class="shop-product-card product-card fade-in" data-category="bottoms" role="listitem" style="transition-delay:0.25s">
+            <a href="product.html" class="product-card__image-wrap" aria-label="View Sunday Joggers">
+              <div class="product-image" style="background:#ebebeb;">
+                <svg class="product-image__bracket" width="68" height="68" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                  <rect x="4" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="4" x2="16" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="44" x2="16" y2="44" stroke="#000" stroke-width="3.5"/>
+                  <rect x="32" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="4" x2="44" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="44" x2="44" y2="44" stroke="#000" stroke-width="3.5"/>
+                </svg>
+                <span class="product-image__name">Sunday Joggers</span>
+              </div>
+              <div class="product-card__overlay">
+                <button class="product-card__quick-add"
+                  data-add-to-cart
+                  data-product-id="sunday-joggers"
+                  data-product-name="Sunday Joggers"
+                  data-product-price="75"
+                  data-product-category="bottoms"
+                  aria-label="Quick add Sunday Joggers to cart">
+                  Quick Add
+                </button>
+              </div>
+            </a>
+            <div class="product-card__info">
+              <p class="product-card__category">Bottoms</p>
+              <h2 class="product-card__name"><a href="product.html">Sunday Joggers</a></h2>
+              <p class="product-card__price">$75</p>
+              <button class="btn btn--outline product-card__btn"
+                data-add-to-cart
+                data-product-id="sunday-joggers"
+                data-product-name="Sunday Joggers"
+                data-product-price="75"
+                data-product-category="bottoms">
+                Add to Cart
+              </button>
+            </div>
+          </article>
+
+          <!-- 7: [BLANK] Cap -->
+          <article class="shop-product-card product-card fade-in" data-category="accessories" role="listitem" style="transition-delay:0.3s">
+            <a href="product.html" class="product-card__image-wrap" aria-label="View [BLANK] Cap">
+              <div class="product-image">
+                <svg class="product-image__bracket" width="68" height="68" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                  <rect x="4" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="4" x2="16" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="44" x2="16" y2="44" stroke="#000" stroke-width="3.5"/>
+                  <rect x="32" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="4" x2="44" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="44" x2="44" y2="44" stroke="#000" stroke-width="3.5"/>
+                </svg>
+                <span class="product-image__name">[BLANK] Cap</span>
+              </div>
+              <div class="product-card__overlay">
+                <button class="product-card__quick-add"
+                  data-add-to-cart
+                  data-product-id="blank-cap"
+                  data-product-name="[BLANK] Cap"
+                  data-product-price="45"
+                  data-product-category="accessories"
+                  aria-label="Quick add [BLANK] Cap to cart">
+                  Quick Add
+                </button>
+              </div>
+            </a>
+            <div class="product-card__info">
+              <p class="product-card__category">Accessories</p>
+              <h2 class="product-card__name"><a href="product.html">[BLANK] Cap</a></h2>
+              <p class="product-card__price">$45</p>
+              <button class="btn btn--outline product-card__btn"
+                data-add-to-cart
+                data-product-id="blank-cap"
+                data-product-name="[BLANK] Cap"
+                data-product-price="45"
+                data-product-category="accessories">
+                Add to Cart
+              </button>
+            </div>
+          </article>
+
+          <!-- 8: Tour Bag Tag -->
+          <article class="shop-product-card product-card fade-in" data-category="accessories" role="listitem" style="transition-delay:0.35s">
+            <a href="product.html" class="product-card__image-wrap" aria-label="View Tour Bag Tag">
+              <div class="product-image" style="background:#ebebeb;">
+                <svg class="product-image__bracket" width="68" height="68" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                  <rect x="4" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="4" x2="16" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="4" y1="44" x2="16" y2="44" stroke="#000" stroke-width="3.5"/>
+                  <rect x="32" y="4" width="12" height="40" fill="none" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="4" x2="44" y2="4" stroke="#000" stroke-width="3.5"/>
+                  <line x1="32" y1="44" x2="44" y2="44" stroke="#000" stroke-width="3.5"/>
+                </svg>
+                <span class="product-image__name">Tour Bag Tag</span>
+              </div>
+              <div class="product-card__overlay">
+                <button class="product-card__quick-add"
+                  data-add-to-cart
+                  data-product-id="tour-bag-tag"
+                  data-product-name="Tour Bag Tag"
+                  data-product-price="25"
+                  data-product-category="accessories"
+                  aria-label="Quick add Tour Bag Tag to cart">
+                  Quick Add
+                </button>
+              </div>
+            </a>
+            <div class="product-card__info">
+              <p class="product-card__category">Accessories</p>
+              <h2 class="product-card__name"><a href="product.html">Tour Bag Tag</a></h2>
+              <p class="product-card__price">$25</p>
+              <button class="btn btn--outline product-card__btn"
+                data-add-to-cart
+                data-product-id="tour-bag-tag"
+                data-product-name="Tour Bag Tag"
+                data-product-price="25"
+                data-product-category="accessories">
+                Add to Cart
+              </button>
+            </div>
+          </article>
+
+        </div>
+        <!-- /shop-grid -->
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__inner">
+        <div>
+          <div class="footer__brand-logo">
+            <svg width="32" height="32" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+              <rect x="2" y="4" width="11" height="32" fill="none" stroke="#fff" stroke-width="3"/>
+              <line x1="2" y1="4" x2="13" y2="4" stroke="#fff" stroke-width="3"/>
+              <line x1="2" y1="36" x2="13" y2="36" stroke="#fff" stroke-width="3"/>
+              <rect x="27" y="4" width="11" height="32" fill="none" stroke="#fff" stroke-width="3"/>
+              <line x1="27" y1="4" x2="38" y2="4" stroke="#fff" stroke-width="3"/>
+              <line x1="27" y1="36" x2="38" y2="36" stroke="#fff" stroke-width="3"/>
+            </svg>
+            <div>
+              <span class="footer__brand-name">[BLANK]</span>
+              <span class="footer__brand-sub">~golf~</span>
+            </div>
+          </div>
+          <p class="footer__tagline">Minimalist golf clothing for the modern player. Premium materials, clean design, accessible prices.</p>
+        </div>
+        <div>
+          <p class="footer__col-title">Shop</p>
+          <ul class="footer__links">
+            <li><a href="shop.html" class="footer__link">All Products</a></li>
+            <li><a href="shop.html" class="footer__link">Tops</a></li>
+            <li><a href="shop.html" class="footer__link">Bottoms</a></li>
+            <li><a href="shop.html" class="footer__link">Accessories</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__col-title">Info</p>
+          <ul class="footer__links">
+            <li><a href="index.html#about" class="footer__link">About Us</a></li>
+            <li><a href="#" class="footer__link">Size Guide</a></li>
+            <li><a href="#" class="footer__link">Shipping &amp; Returns</a></li>
+            <li><a href="#" class="footer__link">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__col-title">Follow</p>
+          <ul class="footer__links">
+            <li><a href="#" class="footer__link">Instagram</a></li>
+            <li><a href="#" class="footer__link">TikTok</a></li>
+            <li><a href="#" class="footer__link">Twitter / X</a></li>
+            <li><a href="#" class="footer__link">Newsletter</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copy">&copy; 2026 [BLANK] GOLF. All rights reserved.</p>
+        <nav class="footer__bottom-links" aria-label="Legal">
+          <a href="#" class="footer__bottom-link">Privacy Policy</a>
+          <a href="#" class="footer__bottom-link">Terms of Service</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>
