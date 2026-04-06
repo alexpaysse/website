@@ -566,6 +566,72 @@ function injectKeyframes() {
 }
 
 /* =========================================
+   FAQ Page — Accordion
+   ========================================= */
+function initFaqAccordion() {
+  const faqAccordion = document.querySelector('.faq-accordion');
+  if (!faqAccordion) return;
+
+  const items = faqAccordion.querySelectorAll('.accordion-item');
+  items.forEach(item => {
+    const trigger = item.querySelector('.accordion-trigger');
+    if (!trigger) return;
+    trigger.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      // Close all
+      items.forEach(i => {
+        i.classList.remove('open');
+        const t = i.querySelector('.accordion-trigger');
+        if (t) t.setAttribute('aria-expanded', 'false');
+      });
+      // Toggle clicked
+      if (!isOpen) {
+        item.classList.add('open');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+}
+
+/* =========================================
+   Contact Page — Form Handler
+   ========================================= */
+function initContactForm() {
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Basic required field validation
+    const requiredFields = form.querySelectorAll('[required]');
+    let valid = true;
+    requiredFields.forEach(field => {
+      if (!field.value.trim()) {
+        valid = false;
+        field.style.borderBottomColor = '#c00';
+        field.addEventListener('input', () => {
+          field.style.borderBottomColor = '';
+        }, { once: true });
+      }
+    });
+
+    if (!valid) {
+      Toast.show('Please fill in all required fields.');
+      return;
+    }
+
+    // Show success message
+    form.reset();
+    const successEl = document.getElementById('form-success');
+    if (successEl) {
+      successEl.classList.add('show');
+      successEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  });
+}
+
+/* =========================================
    Init
    ========================================= */
 document.addEventListener('DOMContentLoaded', () => {
@@ -578,4 +644,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initProductDetail();
   initCartPage();
   initCheckout();
+  initFaqAccordion();
+  initContactForm();
 });

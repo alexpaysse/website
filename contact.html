@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Contact [BLANK] GOLF — Get in touch with our team. We typically respond within 1–2 business days." />
+  <title>Contact — [BLANK] GOLF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='7' height='28' fill='none' stroke='%23000' stroke-width='2.5'/%3E%3Crect x='23' y='2' width='7' height='28' fill='none' stroke='%23000' stroke-width='2.5'/%3E%3C/svg%3E" />
+</head>
+<body>
+
+  <!-- Promo Bar -->
+  <div class="promo-bar">
+    Free shipping on orders over $100 &nbsp;·&nbsp; New arrivals every drop
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="index.html" class="nav__logo" aria-label="[BLANK] GOLF — Home">
+          <div class="nav__logo-lockup">
+            <span class="nav__logo-text">[BLANK]</span>
+            <span class="nav__logo-sub">~GOLF~</span>
+          </div>
+        </a>
+
+        <ul class="nav__links" role="list">
+          <li><a href="shop.html" class="nav__link">Shop</a></li>
+          <li><a href="about.html" class="nav__link">About</a></li>
+          <li>
+            <a href="cart.html" class="nav__link nav__cart" aria-label="Shopping cart">
+              <svg class="nav__cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <path d="M16 10a4 4 0 01-8 0"/>
+              </svg>
+              Cart
+              <span class="cart-badge" aria-live="polite">0</span>
+            </a>
+          </li>
+        </ul>
+
+        <button class="nav__mobile-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Page Header -->
+    <header class="page-header" aria-label="Contact header">
+      <div class="container">
+        <h1 class="page-header__title">Contact</h1>
+      </div>
+    </header>
+
+    <!-- Contact Section -->
+    <section class="section" aria-label="Contact information and form">
+      <div class="container">
+        <div class="contact-grid">
+
+          <!-- Left: Contact Info -->
+          <div class="fade-in">
+            <p class="section-label" style="margin-bottom:var(--spacing-xl);">Get in Touch</p>
+
+            <div style="margin-bottom:var(--spacing-xl);">
+              <p style="font-size:0.75rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:var(--spacing-sm);">Email</p>
+              <a href="mailto:hello@blankgolf.com" style="font-size:1rem;text-decoration:underline;text-underline-offset:3px;">hello@blankgolf.com</a>
+            </div>
+
+            <div style="margin-bottom:var(--spacing-xl);">
+              <p style="font-size:0.75rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:var(--spacing-sm);">Response Time</p>
+              <p style="font-size:0.95rem;line-height:1.7;color:var(--gray-text);">We typically respond within 1–2 business days.</p>
+            </div>
+
+            <div>
+              <p style="font-size:0.75rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:var(--spacing-sm);">Order Issues</p>
+              <p style="font-size:0.95rem;line-height:1.7;color:var(--gray-text);">For order issues, please include your order number in your message so we can help you faster.</p>
+            </div>
+          </div>
+
+          <!-- Right: Contact Form -->
+          <div class="fade-in" style="transition-delay:0.1s;">
+            <form id="contact-form" novalidate aria-label="Contact form">
+              <div class="form-group">
+                <label class="form-label" for="contact-name">Name</label>
+                <input class="form-input" type="text" id="contact-name" name="name" placeholder="Your name" required autocomplete="name" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="contact-email">Email</label>
+                <input class="form-input" type="email" id="contact-email" name="email" placeholder="your@email.com" required autocomplete="email" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="contact-subject">Subject</label>
+                <select class="form-select" id="contact-subject" name="subject" required>
+                  <option value="" disabled selected>Select a topic</option>
+                  <option value="general">General Inquiry</option>
+                  <option value="order">Order Issue</option>
+                  <option value="returns">Returns</option>
+                  <option value="press">Press</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="contact-message">Message</label>
+                <textarea class="form-textarea" id="contact-message" name="message" rows="5" placeholder="How can we help?" required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn--primary" style="width:100%;">Send Message</button>
+
+              <div class="form-success" id="form-success" role="status" aria-live="polite">
+                Thanks! We'll be in touch soon.
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__inner">
+        <div>
+          <div class="footer__brand-logo">
+            <div class="footer__logo-lockup">
+              <span class="footer__brand-name">[BLANK]</span>
+              <span class="footer__brand-sub">~GOLF~</span>
+            </div>
+          </div>
+          <p class="footer__tagline">Minimalist golf clothing for the modern player. Premium materials, clean design, accessible prices.</p>
+        </div>
+        <div>
+          <p class="footer__col-title">Shop</p>
+          <ul class="footer__links">
+            <li><a href="shop.html" class="footer__link">All Products</a></li>
+            <li><a href="product.html" class="footer__link">[BLANK] Polo</a></li>
+            <li><a href="product.html" class="footer__link">[BLANK] Hat</a></li>
+            <li><a href="product.html" class="footer__link">[BLANK] Sweater</a></li>
+            <li><a href="product.html" class="footer__link">Quarter-Zip</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__col-title">Info</p>
+          <ul class="footer__links">
+            <li><a href="about.html" class="footer__link">About Us</a></li>
+            <li><a href="faq.html" class="footer__link">FAQ</a></li>
+            <li><a href="size-guide.html" class="footer__link">Size Guide</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__col-title">Support</p>
+          <ul class="footer__links">
+            <li><a href="contact.html" class="footer__link">Contact</a></li>
+            <li><a href="returns.html" class="footer__link">Returns</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copy">&copy; 2026 [BLANK] GOLF. All rights reserved.</p>
+        <nav class="footer__bottom-links" aria-label="Legal">
+          <a href="#" class="footer__bottom-link">Privacy Policy</a>
+          <a href="#" class="footer__bottom-link">Terms of Service</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>
