@@ -4,3 +4,6 @@ __pycache__/
 venv/
 .nflreadpy_cache/
 *.egg-info/
+
+# Betting record stays local/private, not on the public repo.
+data/picks.csv
