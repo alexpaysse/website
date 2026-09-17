@@ -26,13 +26,18 @@ def main() -> None:
 
     print(f"Backtesting seasons {args.seasons} (training on all but the most recent, "
           f"evaluating held out on the last one)...")
-    df, metrics, model = run_backtest(args.seasons)
+    df, metrics, model, totals_model = run_backtest(args.seasons)
 
-    print("\nFitted model:")
+    print("\nFitted spread model:")
     print(f"  predicted_margin = {metrics['elo_to_points']:.4f} * elo_diff "
           f"+ {metrics['epa_coef']:.2f} * epa_diff")
     print(f"  residual sigma (for win prob): {metrics['sigma']:.2f} points")
     print(f"  trained on seasons: {metrics['train_seasons']}")
+
+    print("\nFitted totals model:")
+    print(f"  predicted_total = {metrics['totals_intercept']:.2f} "
+          f"+ {metrics['totals_scoring_coef']:.2f} * scoring_env")
+    print(f"  residual sigma: {metrics['totals_sigma']:.2f} points")
 
     print(f"\nHeld-out evaluation -- {metrics['eval_season']} season ({metrics['n_games']} games):")
     print(f"  Brier score:              {metrics['brier_score']:.4f}  (lower is better, 0.25 = coin flip)")
@@ -41,6 +46,10 @@ def main() -> None:
     print(f"  Mean abs. spread error:   {metrics['mean_abs_spread_error']:.2f} points vs. closing line")
     print(f"  ATS accuracy (all games): {metrics['ats_accuracy_all_games']:.1%}  "
           f"(betting the model's side on every single game, not just flagged edges)")
+    print(f"  Mean abs. total error:    {metrics['mean_abs_total_error']:.2f} points vs. closing total "
+          f"({metrics['n_games_with_total']} games with a posted total)")
+    print(f"  Total (O/U) accuracy:     {metrics['total_accuracy_all_games']:.1%}  "
+          f"(betting the model's side on every game's total, not just flagged edges)")
 
     if args.save:
         df.to_csv(args.save, index=False)

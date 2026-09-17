@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Grade logged picks against final scores and print a running ATS record.
+"""Grade logged bets (spread and total) against final scores, print a running record.
 
 Usage:
     python scripts/grade_picks.py
@@ -21,25 +21,34 @@ PICKS_CSV = Path(__file__).resolve().parent.parent / "data" / "picks.csv"
 
 
 def grade(df: pd.DataFrame) -> pd.DataFrame:
+    """Fill in actual_value and result for every graded bet.
+
+    Spread bets (pick_side "home"/"away") and total bets (pick_side
+    "over"/"under") share the same win condition once you notice "home" and
+    "over" both mean "wins if actual_value > market_line": a home-side pick
+    wins if the margin (home - away) beats the line, an over pick wins if
+    the total beats the line.
+    """
     seasons = sorted(df["season"].unique().tolist())
     schedules = load_schedules(seasons)
     scores = schedules.set_index("game_id")[["home_score", "away_score"]]
 
     df = df.merge(scores, left_on="game_id", right_index=True, how="left")
     played = df["home_score"].notna() & df["away_score"].notna()
+    is_spread = df["bet_type"] == "spread"
 
-    df.loc[played, "actual_margin"] = df.loc[played, "home_score"] - df.loc[played, "away_score"]
-    home_covered = df["actual_margin"] > df["market_spread"]
-    away_covered = df["actual_margin"] < df["market_spread"]
-    push = df["actual_margin"] == df["market_spread"]
+    margin = df["home_score"] - df["away_score"]
+    total = df["home_score"] + df["away_score"]
+    df.loc[played & is_spread, "actual_value"] = margin[played & is_spread]
+    df.loc[played & ~is_spread, "actual_value"] = total[played & ~is_spread]
 
-    picked_home = df["pick_side"] == "home"
-    won = played & (
-        (picked_home & home_covered) | (~picked_home & away_covered)
-    ) & ~push
-    lost = played & (
-        (picked_home & away_covered) | (~picked_home & home_covered)
-    ) & ~push
+    higher_side = df["pick_side"].isin(["home", "over"])
+    covers_high = df["actual_value"] > df["market_line"]
+    covers_low = df["actual_value"] < df["market_line"]
+    push = df["actual_value"] == df["market_line"]
+
+    won = played & ~push & ((higher_side & covers_high) | (~higher_side & covers_low))
+    lost = played & ~push & ((higher_side & covers_low) | (~higher_side & covers_high))
     pushed = played & push
 
     df.loc[won, "result"] = "WIN"
@@ -49,26 +58,31 @@ def grade(df: pd.DataFrame) -> pd.DataFrame:
     return df.drop(columns=["home_score", "away_score"])
 
 
+def _record_line(graded: pd.DataFrame) -> str:
+    wins = int((graded["result"] == "WIN").sum())
+    losses = int((graded["result"] == "LOSS").sum())
+    pushes = int((graded["result"] == "PUSH").sum())
+    decided = wins + losses
+    win_rate = wins / decided if decided else 0.0
+    units = wins * 1.0 - losses * 1.1  # standard -110 juice
+    return f"{wins}-{losses}-{pushes}  ({win_rate:.1%} on decided picks)  units: {units:+.2f}"
+
+
 def summarize(df: pd.DataFrame) -> None:
     graded = df[df["result"].isin(["WIN", "LOSS", "PUSH"])]
     if graded.empty:
         print("No graded picks yet -- games may still be in progress.")
         return
 
-    wins = int((graded["result"] == "WIN").sum())
-    losses = int((graded["result"] == "LOSS").sum())
-    pushes = int((graded["result"] == "PUSH").sum())
-    decided = wins + losses
-    win_rate = wins / decided if decided else 0.0
-    # Standard -110 juice: win +1 unit, lose 1.1 units.
-    units = wins * 1.0 - losses * 1.1
-
-    print(f"Record: {wins}-{losses}-{pushes}  ({win_rate:.1%} on decided picks)")
-    print(f"Units (assuming -110 odds): {units:+.2f}")
+    print(f"Overall record: {_record_line(graded)}")
+    for bet_type in ("spread", "total"):
+        subset = graded[graded["bet_type"] == bet_type]
+        if not subset.empty:
+            print(f"  {bet_type:>6}: {_record_line(subset)}")
 
     print("\nBy week:")
     by_week = (
-        graded.groupby(["season", "week"])["result"]
+        graded.groupby(["season", "week", "bet_type"])["result"]
         .value_counts()
         .unstack(fill_value=0)
         .reindex(columns=["WIN", "LOSS", "PUSH"], fill_value=0)
@@ -77,7 +91,7 @@ def summarize(df: pd.DataFrame) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Grade logged picks and print the ATS record.")
+    parser = argparse.ArgumentParser(description="Grade logged bets and print the record.")
     parser.add_argument("--season", type=int, default=None, help="Only grade/report this season")
     args = parser.parse_args()
 

@@ -44,3 +44,34 @@ class NFLPredictionModel:
         self.elo_to_points, self.epa_coef = (float(c) for c in coef)
         residuals = margins - X @ coef
         self.sigma = float(np.std(residuals))
+
+
+@dataclass
+class TotalPrediction:
+    predicted_total: float  # combined points, both teams
+
+
+class NFLTotalsModel:
+    """predicted_total = intercept + coef * scoring_env, fit with OLS.
+
+    ``scoring_env`` (see epa.matchup_edges) is how favorable this specific
+    matchup looks for scoring -- both offenses' expected edge against the
+    defense they're actually facing. Unlike the spread model this needs an
+    intercept: a total is centered on the league-average game total (around
+    44-46 points), not zero.
+    """
+
+    def __init__(self, intercept: float = 45.0, scoring_coef: float = 40.0, sigma: float = 10.0):
+        self.intercept = intercept
+        self.scoring_coef = scoring_coef
+        self.sigma = sigma
+
+    def predict(self, scoring_env: float) -> TotalPrediction:
+        return TotalPrediction(predicted_total=self.intercept + self.scoring_coef * scoring_env)
+
+    def fit(self, scoring_envs: np.ndarray, totals: np.ndarray) -> None:
+        X = np.column_stack([np.ones_like(scoring_envs), scoring_envs])
+        coef, *_ = np.linalg.lstsq(X, totals, rcond=None)
+        self.intercept, self.scoring_coef = (float(c) for c in coef)
+        residuals = totals - X @ coef
+        self.sigma = float(np.std(residuals))

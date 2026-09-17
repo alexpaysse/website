@@ -7,8 +7,8 @@ import pandas as pd
 from . import config
 from .data import load_pbp, load_schedules
 from .elo import EloRatings
-from .epa import TeamEpaTracker, compute_game_team_epa
-from .model import NFLPredictionModel
+from .epa import TeamEpaTracker, compute_game_team_epa, matchup_edges
+from .model import NFLPredictionModel, NFLTotalsModel
 
 
 def walk_forward_features(
@@ -42,7 +42,7 @@ def walk_forward_features(
 
         home_off, home_def = epa_tracker.pregame(game.home_team)
         away_off, away_def = epa_tracker.pregame(game.away_team)
-        epa_diff = (home_off - home_def) - (away_off - away_def)
+        epa_diff, scoring_env = matchup_edges(home_off, home_def, away_off, away_def)
 
         rows.append(
             {
@@ -54,8 +54,11 @@ def walk_forward_features(
                 "away_team": game.away_team,
                 "elo_diff": elo_diff,
                 "epa_diff": epa_diff,
+                "scoring_env": scoring_env,
                 "actual_margin": game.home_score - game.away_score,
+                "actual_total": game.home_score + game.away_score,
                 "market_spread": game.spread_line,
+                "market_total": game.total_line,
             }
         )
 
@@ -83,8 +86,10 @@ def _log_loss(probs: np.ndarray, outcomes: np.ndarray) -> float:
     return float(-np.mean(outcomes * np.log(p) + (1 - outcomes) * np.log(1 - p)))
 
 
-def run_backtest(seasons: list[int] | None = None) -> tuple[pd.DataFrame, dict, NFLPredictionModel]:
-    """Fit the model on all but the most recent season, evaluate on that holdout season."""
+def run_backtest(
+    seasons: list[int] | None = None,
+) -> tuple[pd.DataFrame, dict, NFLPredictionModel, NFLTotalsModel]:
+    """Fit the models on all but the most recent season, evaluate on that holdout season."""
     seasons = seasons or config.BACKTEST_SEASONS
     schedules = load_schedules(seasons)
     played = _played_reg_games(schedules)
@@ -101,6 +106,10 @@ def run_backtest(seasons: list[int] | None = None) -> tuple[pd.DataFrame, dict, 
     model = NFLPredictionModel()
     model.fit(train["elo_diff"].to_numpy(), train["epa_diff"].to_numpy(), train["actual_margin"].to_numpy())
 
+    totals_model = NFLTotalsModel()
+    totals_train = train.dropna(subset=["market_total"])
+    totals_model.fit(totals_train["scoring_env"].to_numpy(), totals_train["actual_total"].to_numpy())
+
     preds = df.apply(lambda r: model.predict(r["elo_diff"], r["epa_diff"]), axis=1)
     df["predicted_margin"] = [p.predicted_margin for p in preds]
     df["home_win_prob"] = [p.home_win_prob for p in preds]
@@ -110,9 +119,16 @@ def run_backtest(seasons: list[int] | None = None) -> tuple[pd.DataFrame, dict, 
     df["home_covered"] = df["actual_margin"] > df["market_spread"]
     df["pick_correct"] = np.where(df["picked_home"], df["home_covered"], ~df["home_covered"])
 
+    df["predicted_total"] = [totals_model.predict(v).predicted_total for v in df["scoring_env"]]
+    df["total_edge"] = df["predicted_total"] - df["market_total"]
+    df["picked_over"] = df["total_edge"] > 0
+    df["went_over"] = df["actual_total"] > df["market_total"]
+    df["total_pick_correct"] = np.where(df["picked_over"], df["went_over"], ~df["went_over"])
+
     eval_df = df[df["season"] == holdout_season]
     if eval_df.empty:
         eval_df = df
+    eval_totals = eval_df.dropna(subset=["market_total"])
 
     metrics = {
         "train_seasons": sorted(train["season"].unique().tolist()),
@@ -126,14 +142,20 @@ def run_backtest(seasons: list[int] | None = None) -> tuple[pd.DataFrame, dict, 
         "elo_to_points": model.elo_to_points,
         "epa_coef": model.epa_coef,
         "sigma": model.sigma,
+        "n_games_with_total": int(len(eval_totals)),
+        "mean_abs_total_error": float((eval_totals["predicted_total"] - eval_totals["market_total"]).abs().mean()),
+        "total_accuracy_all_games": float(eval_totals["total_pick_correct"].mean()),
+        "totals_intercept": totals_model.intercept,
+        "totals_scoring_coef": totals_model.scoring_coef,
+        "totals_sigma": totals_model.sigma,
     }
-    return df, metrics, model
+    return df, metrics, model, totals_model
 
 
 def build_current_state(
     seasons: list[int] | None = None,
-) -> tuple[EloRatings, TeamEpaTracker, NFLPredictionModel, pd.DataFrame]:
-    """Replay every played game to date and fit the model on all of it.
+) -> tuple[EloRatings, TeamEpaTracker, NFLPredictionModel, NFLTotalsModel, pd.DataFrame]:
+    """Replay every played game to date and fit the models on all of it.
 
     Used by the weekly script: the returned Elo/EPA state reflects every
     completed game, ready to score whatever games haven't been played yet.
@@ -148,4 +170,8 @@ def build_current_state(
     model = NFLPredictionModel()
     model.fit(df["elo_diff"].to_numpy(), df["epa_diff"].to_numpy(), df["actual_margin"].to_numpy())
 
-    return elo, epa_tracker, model, schedules
+    totals_model = NFLTotalsModel()
+    totals_df = df.dropna(subset=["market_total"])
+    totals_model.fit(totals_df["scoring_env"].to_numpy(), totals_df["actual_total"].to_numpy())
+
+    return elo, epa_tracker, model, totals_model, schedules

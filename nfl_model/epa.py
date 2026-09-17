@@ -53,3 +53,17 @@ class TeamEpaTracker:
             self._off[team].append(off_epa_play)
         if def_epa_play_allowed is not None and not math.isnan(def_epa_play_allowed):
             self._def[team].append(def_epa_play_allowed)
+
+
+def matchup_edges(home_off: float, home_def: float, away_off: float, away_def: float) -> tuple[float, float]:
+    """Turns raw EPA/play ratings into the two features the models use.
+
+    ``net_diff`` is how much better the home team's own net rating (offense
+    minus defense) is than the away team's -- used for the spread.
+    ``scoring_env`` is each offense's expected edge against the specific
+    opponent it's facing this week, summed -- used for the total (a good
+    offense playing a bad defense pushes this up for *both* teams' plays).
+    """
+    net_diff = (home_off - home_def) - (away_off - away_def)
+    scoring_env = (home_off - away_def) + (away_off - home_def)
+    return net_diff, scoring_env

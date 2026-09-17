@@ -22,4 +22,5 @@ SEASON_REGRESSION = 1 / 3   # fraction regressed toward the mean between seasons
 EPA_TRAILING_GAMES = 10     # trailing window (in games) for rolling team EPA/play
 
 # --- Betting ---
-EDGE_THRESHOLD = 1.5        # minimum |model spread - market spread| to flag a pick
+EDGE_THRESHOLD = 1.5        # minimum |model spread - market spread| to flag a spread pick
+TOTAL_EDGE_THRESHOLD = 3.0  # minimum |model total - market total| to flag an over/under pick
