@@ -67,6 +67,15 @@ game in the target week, and flags any game where the model's predicted
 margin disagrees with the market spread by more than `--threshold` points
 (default: 1.5). Flagged picks are appended to `data/picks.csv`.
 
+For each flagged pick it also prints context pulled live from `nflreadpy`:
+projected starting QBs, each team's latest injury report, the last few
+head-to-head results between the two teams, any meaningful rest-days edge,
+and a dome/outdoors note. **This context is informational only** -- it is
+not baked into `predicted_margin` (see `nfl_model/context.py`). The model's
+math is backtested; a point value for "starting QB questionable" is not, so
+rather than guess at one, that layer is left for you to weigh by hand before
+betting.
+
 ### Grade picks
 
 ```bash

@@ -17,7 +17,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from nfl_model import config
+from nfl_model import config, context
 from nfl_model.backtest import build_current_state
 from nfl_model.elo import EloRatings
 from nfl_model.epa import TeamEpaTracker
@@ -84,6 +84,11 @@ def predict_week(
                 "edge": round(edge, 2) if has_line else None,
                 "pick_side": pick_side,
                 "pick_team": pick_team,
+                "home_qb_name": g.home_qb_name,
+                "away_qb_name": g.away_qb_name,
+                "home_rest": g.home_rest,
+                "away_rest": g.away_rest,
+                "roof": g.roof,
             }
         )
     return pd.DataFrame(rows)
@@ -157,8 +162,31 @@ def main() -> None:
         return
 
     print(f"\n{len(flagged)} pick(s) flagged (|edge| >= {args.threshold}):")
+    print(
+        "(Context below is informational only -- it does not feed the model's spread. "
+        "Use it as a manual gut-check before betting.)"
+    )
+    injuries = context.load_injuries(season)
     for row in flagged.itertuples():
-        print(f"  Take {row.pick_team} ({row.pick_side}) -- edge {row.edge:+.1f}")
+        print(f"\n  Take {row.pick_team} ({row.pick_side}) -- edge {row.edge:+.1f}")
+        print(f"    Projected starters: {row.away_team} {row.away_qb_name} @ {row.home_team} {row.home_qb_name}")
+
+        for team in (row.home_team, row.away_team):
+            notes = context.team_injury_notes(injuries, team, week)
+            if notes:
+                print(f"    {team} injury report: " + "; ".join(notes))
+
+        h2h = context.head_to_head(schedules, row.home_team, row.away_team)
+        if h2h:
+            print(f"    Last meetings: " + " | ".join(h2h))
+
+        rest = context.rest_note(row.home_team, row.away_team, row.home_rest, row.away_rest)
+        if rest:
+            print(f"    Rest edge: {rest}")
+
+        venue = context.venue_note(row.roof)
+        if venue:
+            print(f"    Venue: {venue}")
 
     if not args.no_log:
         n_logged = log_picks(flagged)
