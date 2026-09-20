@@ -27,7 +27,9 @@ def grade(df: pd.DataFrame) -> pd.DataFrame:
     "over"/"under") share the same win condition once you notice "home" and
     "over" both mean "wins if actual_value > market_line": a home-side pick
     wins if the margin (home - away) beats the line, an over pick wins if
-    the total beats the line.
+    the total beats the line. A moneyline bet is just a spread bet at a
+    line of 0 -- the picked side has to win outright -- so it grades through
+    the same path.
     """
     seasons = sorted(df["season"].unique().tolist())
     schedules = load_schedules(seasons)
@@ -35,12 +37,12 @@ def grade(df: pd.DataFrame) -> pd.DataFrame:
 
     df = df.merge(scores, left_on="game_id", right_index=True, how="left")
     played = df["home_score"].notna() & df["away_score"].notna()
-    is_spread = df["bet_type"] == "spread"
+    is_total = df["bet_type"] == "total"
 
     margin = df["home_score"] - df["away_score"]
     total = df["home_score"] + df["away_score"]
-    df.loc[played & is_spread, "actual_value"] = margin[played & is_spread]
-    df.loc[played & ~is_spread, "actual_value"] = total[played & ~is_spread]
+    df.loc[played & ~is_total, "actual_value"] = margin[played & ~is_total]
+    df.loc[played & is_total, "actual_value"] = total[played & is_total]
 
     higher_side = df["pick_side"].isin(["home", "over"])
     covers_high = df["actual_value"] > df["market_line"]
@@ -68,10 +70,16 @@ def _record_line(graded: pd.DataFrame) -> str:
     return f"{wins}-{losses}-{pushes}  ({win_rate:.1%} on decided picks)  units: {units:+.2f}"
 
 
+def _profit_multiple(odds: pd.Series) -> pd.Series:
+    """Profit per $1 staked, from American odds (+124 -> 1.24, -110 -> 0.909)."""
+    odds = odds.fillna(-110)
+    return odds.where(odds < 0, odds / 100).mask(odds < 0, 100 / odds.abs())
+
+
 def _dollar_pnl(graded: pd.DataFrame) -> float:
-    """Actual $ P/L for real-money bets at standard -110 odds, using each row's stake."""
+    """Actual $ P/L for real-money bets, using each row's stake and its own odds."""
     stake = graded["stake"].fillna(0)
-    win_profit = stake * (100 / 110)
+    win_profit = stake * _profit_multiple(graded.get("odds", pd.Series(index=graded.index, dtype=float)))
     pnl = pd.Series(0.0, index=graded.index)
     pnl[graded["result"] == "WIN"] = win_profit[graded["result"] == "WIN"]
     pnl[graded["result"] == "LOSS"] = -stake[graded["result"] == "LOSS"]

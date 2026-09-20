@@ -33,7 +33,7 @@ PICKS_COLUMNS = [
     "logged_at", "season", "week", "game_id", "gameday",
     "home_team", "away_team", "bet_type",
     "market_line", "model_value", "home_win_prob", "edge",
-    "pick_side", "pick_label", "mode", "stake",
+    "pick_side", "pick_label", "mode", "stake", "odds",
     "actual_value", "result",
 ]
 
@@ -141,7 +141,9 @@ def flagged_bets(predictions: pd.DataFrame, spread_threshold: float, total_thres
     return combined.sort_values("abs_edge", ascending=False).drop(columns="abs_edge")
 
 
-def log_picks(df: pd.DataFrame, mode: str = "paper", stake: float | None = None) -> int:
+def log_picks(
+    df: pd.DataFrame, mode: str = "paper", stake: float | None = None, odds: float = -110
+) -> int:
     """Append bets to data/picks.csv, skipping (game_id, bet_type, mode) rows already logged."""
     if PICKS_CSV.exists() and PICKS_CSV.stat().st_size > 0:
         existing = pd.read_csv(PICKS_CSV)
@@ -151,6 +153,7 @@ def log_picks(df: pd.DataFrame, mode: str = "paper", stake: float | None = None)
     df = df.copy()
     df["mode"] = mode
     df["stake"] = stake
+    df["odds"] = odds
 
     if not existing.empty:
         already_logged = set(zip(existing["game_id"], existing["bet_type"], existing.get("mode", "paper")))
@@ -201,6 +204,10 @@ def main() -> None:
              "Matches pick_label (team code, or OVER/UNDER for a total pick).",
     )
     parser.add_argument("--stake", type=float, default=5.0, help="Dollar stake per --real bet (default: 5.0)")
+    parser.add_argument(
+        "--odds", type=float, default=-110,
+        help="American odds for the --real bets, e.g. -110 or 124 (default: -110)",
+    )
     args = parser.parse_args()
 
     print("Loading schedules and play-by-play, rebuilding current ratings...")
@@ -280,7 +287,7 @@ def main() -> None:
     if args.real:
         real_bets = select_real_bets(predictions, args.real)
         if not real_bets.empty:
-            n_real = log_picks(real_bets, mode="real", stake=args.stake)
+            n_real = log_picks(real_bets, mode="real", stake=args.stake, odds=args.odds)
             print(f"Logged {n_real} new REAL bet(s) at ${args.stake:.2f} each to {PICKS_CSV}")
 
 
