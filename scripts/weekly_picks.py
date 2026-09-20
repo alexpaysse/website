@@ -26,12 +26,14 @@ from nfl_model.model import NFLPredictionModel, NFLTotalsModel
 PICKS_CSV = Path(__file__).resolve().parent.parent / "data" / "picks.csv"
 
 # One row per bet. bet_type is "spread" or "total"; pick_side/pick_label and
-# market_line/model_value mean different things depending on which.
+# market_line/model_value mean different things depending on which. mode is
+# "paper" (default, no money) or "real" (an actual bet with a $ stake) --
+# the same game/bet_type can have both a paper row and a real row.
 PICKS_COLUMNS = [
     "logged_at", "season", "week", "game_id", "gameday",
     "home_team", "away_team", "bet_type",
     "market_line", "model_value", "home_win_prob", "edge",
-    "pick_side", "pick_label",
+    "pick_side", "pick_label", "mode", "stake",
     "actual_value", "result",
 ]
 
@@ -139,16 +141,20 @@ def flagged_bets(predictions: pd.DataFrame, spread_threshold: float, total_thres
     return combined.sort_values("abs_edge", ascending=False).drop(columns="abs_edge")
 
 
-def log_picks(df: pd.DataFrame) -> int:
-    """Append newly flagged bets to data/picks.csv, skipping (game_id, bet_type) pairs already logged."""
+def log_picks(df: pd.DataFrame, mode: str = "paper", stake: float | None = None) -> int:
+    """Append bets to data/picks.csv, skipping (game_id, bet_type, mode) rows already logged."""
     if PICKS_CSV.exists() and PICKS_CSV.stat().st_size > 0:
         existing = pd.read_csv(PICKS_CSV)
     else:
         existing = pd.DataFrame(columns=PICKS_COLUMNS)
 
+    df = df.copy()
+    df["mode"] = mode
+    df["stake"] = stake
+
     if not existing.empty:
-        already_logged = set(zip(existing["game_id"], existing["bet_type"]))
-        to_log = df[~df.apply(lambda r: (r["game_id"], r["bet_type"]) in already_logged, axis=1)].copy()
+        already_logged = set(zip(existing["game_id"], existing["bet_type"], existing.get("mode", "paper")))
+        to_log = df[~df.apply(lambda r: (r["game_id"], r["bet_type"], r["mode"]) in already_logged, axis=1)].copy()
     else:
         to_log = df.copy()
     if to_log.empty:
@@ -165,6 +171,21 @@ def log_picks(df: pd.DataFrame) -> int:
     return len(to_log)
 
 
+def select_real_bets(predictions: pd.DataFrame, picks: list[str]) -> pd.DataFrame:
+    """Pull specific bets out of `predictions` by pick label, e.g. "HOU" or "SEA:total"."""
+    all_bets = flagged_bets(predictions, spread_threshold=-1, total_threshold=-1)  # every bet, either side
+    rows = []
+    for label in picks:
+        team, _, bet_type = label.partition(":")
+        bet_type = bet_type or "spread"
+        match = all_bets[(all_bets["pick_label"] == team) & (all_bets["bet_type"] == bet_type)]
+        if match.empty:
+            print(f"  Warning: no bet found matching '{label}' (bet_type={bet_type}) -- skipping")
+            continue
+        rows.append(match.iloc[0])
+    return pd.DataFrame(rows) if rows else pd.DataFrame(columns=all_bets.columns)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Flag games where the model disagrees with the spread or total.")
     parser.add_argument("--season", type=int, default=None)
@@ -174,6 +195,12 @@ def main() -> None:
         "--total-threshold", type=float, default=config.TOTAL_EDGE_THRESHOLD, help="Total (O/U) edge threshold"
     )
     parser.add_argument("--no-log", action="store_true", help="Print only, don't write to data/picks.csv")
+    parser.add_argument(
+        "--real", type=str, nargs="+", default=None,
+        help="Log these specific picks as real-money bets, e.g. --real HOU JAX GB:total. "
+             "Matches pick_label (team code, or OVER/UNDER for a total pick).",
+    )
+    parser.add_argument("--stake", type=float, default=5.0, help="Dollar stake per --real bet (default: 5.0)")
     args = parser.parse_args()
 
     print("Loading schedules and play-by-play, rebuilding current ratings...")
@@ -248,7 +275,13 @@ def main() -> None:
 
     if not args.no_log:
         n_logged = log_picks(flagged)
-        print(f"\nLogged {n_logged} new bet(s) to {PICKS_CSV}")
+        print(f"\nLogged {n_logged} new paper bet(s) to {PICKS_CSV}")
+
+    if args.real:
+        real_bets = select_real_bets(predictions, args.real)
+        if not real_bets.empty:
+            n_real = log_picks(real_bets, mode="real", stake=args.stake)
+            print(f"Logged {n_real} new REAL bet(s) at ${args.stake:.2f} each to {PICKS_CSV}")
 
 
 if __name__ == "__main__":

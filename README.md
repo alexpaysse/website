@@ -78,7 +78,21 @@ where the model disagrees with the market by more than the edge threshold —
 `--threshold` points for the spread (default 1.5), `--total-threshold`
 points for the total (default 3.0; totals tend to have more residual
 variance than margins, hence the higher default). Flagged bets are appended
-to `data/picks.csv`, one row per bet, tagged `spread` or `total`.
+to `data/picks.csv`, one row per bet, tagged `spread` or `total`, and
+tagged `mode=paper` (no money) by default.
+
+To log specific bets as real money instead, use `--real` with the pick
+label(s) and a stake:
+
+```bash
+python scripts/weekly_picks.py --real HOU JAX "GB:total" --stake 5
+```
+
+`--real` matches a pick's team code (for a spread bet) or `OVER`/`UNDER`
+(for a total bet -- disambiguate with `TEAM:total` if a game has both a
+spread and a total flagged). Real bets get their own `mode=real` row with
+the `--stake` dollar amount, logged separately from the paper row for the
+same game so paper and real performance can be compared.
 
 For each flagged pick it also prints context pulled live from `nflreadpy`:
 projected starting QBs, each team's latest injury report, the last few
@@ -98,7 +112,8 @@ python scripts/grade_picks.py --season 2026
 
 Looks up final scores for every logged bet, fills in `actual_value` and
 `result` (WIN/LOSS/PUSH) in `data/picks.csv`, and prints a running record
-(overall, plus broken out by `spread` vs `total`), win rate, unit total (at
+**separately for paper and real-money bets**, each broken out by `spread`
+vs `total`, win rate, unit total (at
 standard -110 odds), and a week-by-week breakdown.
 
 ## Project layout

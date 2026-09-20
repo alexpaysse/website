@@ -68,21 +68,38 @@ def _record_line(graded: pd.DataFrame) -> str:
     return f"{wins}-{losses}-{pushes}  ({win_rate:.1%} on decided picks)  units: {units:+.2f}"
 
 
+def _dollar_pnl(graded: pd.DataFrame) -> float:
+    """Actual $ P/L for real-money bets at standard -110 odds, using each row's stake."""
+    stake = graded["stake"].fillna(0)
+    win_profit = stake * (100 / 110)
+    pnl = pd.Series(0.0, index=graded.index)
+    pnl[graded["result"] == "WIN"] = win_profit[graded["result"] == "WIN"]
+    pnl[graded["result"] == "LOSS"] = -stake[graded["result"] == "LOSS"]
+    return float(pnl.sum())
+
+
 def summarize(df: pd.DataFrame) -> None:
     graded = df[df["result"].isin(["WIN", "LOSS", "PUSH"])]
     if graded.empty:
         print("No graded picks yet -- games may still be in progress.")
         return
 
-    print(f"Overall record: {_record_line(graded)}")
-    for bet_type in ("spread", "total"):
-        subset = graded[graded["bet_type"] == bet_type]
-        if not subset.empty:
-            print(f"  {bet_type:>6}: {_record_line(subset)}")
+    for mode in ("paper", "real"):
+        subset = graded[graded.get("mode", "paper").fillna("paper") == mode]
+        if subset.empty:
+            continue
+        label = "PAPER (no money)" if mode == "paper" else "REAL MONEY"
+        print(f"\n[{label}] {_record_line(subset)}")
+        if mode == "real":
+            print(f"  Actual $ P/L (at -110): {_dollar_pnl(subset):+.2f}")
+        for bet_type in ("spread", "total"):
+            bt_subset = subset[subset["bet_type"] == bet_type]
+            if not bt_subset.empty:
+                print(f"    {bet_type:>6}: {_record_line(bt_subset)}")
 
     print("\nBy week:")
     by_week = (
-        graded.groupby(["season", "week", "bet_type"])["result"]
+        graded.groupby(["season", "week", "bet_type", "mode"])["result"]
         .value_counts()
         .unstack(fill_value=0)
         .reindex(columns=["WIN", "LOSS", "PUSH"], fill_value=0)
