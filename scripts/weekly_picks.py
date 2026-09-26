@@ -55,10 +55,15 @@ def predict_week(
     season: int,
     week: int,
 ) -> pd.DataFrame:
+    # Only games that haven't kicked off yet. A game that already has a score
+    # is unbettable, and worse, the Elo/EPA state passed in here has already
+    # been updated with that game's own result -- "predicting" it would be
+    # lookahead, not a prediction.
     games = schedules[
         (schedules["season"] == season)
         & (schedules["week"] == week)
         & (schedules["game_type"] == "REG")
+        & (schedules["home_score"].isna())
     ]
 
     rows = []
